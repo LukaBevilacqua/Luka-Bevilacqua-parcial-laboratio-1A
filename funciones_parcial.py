@@ -1,5 +1,3 @@
-
-
 def menu():
     print("-----------------------------------------")
     print("|  *** Menu de Opciones ***             |")
@@ -66,21 +64,37 @@ def listar_insumos_por_marca(lista:list):
                 print(insumos['NOMBRE'], insumos['PRECIO'])
 
 
-def buscarInsumoPorLista(lista:list, caracteristica:str):
-    if caracteristica in lista:
-        for insumo in lista:
-            print(insumo)
+def buscarInsumoPorLista(lista:list):
+    caracteristica = input("Ingrese la caracteristica que desea en su producto: ").capitalize()
+    insumos_encontrados = []
+    for insumo in lista:
+        caracteristicas = insumo['CARACTERISTICAS'].split('~')
+        if caracteristica in caracteristicas:
+            insumos_encontrados.append(insumo)
+    if len(insumos_encontrados) > 0:
+        print("---------------------------------------------------------------------")
+        print("Insumos encontrados:")
+        for insumo in insumos_encontrados:
+            print(f"ID: {insumo['ID']} NOMBRE:{insumo['NOMBRE']} MARCA: {insumo['MARCA']} PRECIO:{insumo['PRECIO']}")
+        print("---------------------------------------------------------------------")
     else:
-        print("No hay productos con esa caracteristica")
+        print("No se encontro ningun insumo con esa caracteristica")
+
+
+def listarInsumosOrdenados(lista:list):
+    flag_cambio = True
+    contador = 1
+    while flag_cambio:
+        for insumo in range(len(lista) - contador):
+            if insumo['MARCA'] > insumo['MARCA' + 1]:
+                aux = insumo['MARCA']
+                insumo['MARCA'] = insumo['MARCA' + 1]
+                insumo['MARCA' + 1] = aux
+                flag_cambio = True
+            print(insumo)
+        contador = contador + 1
 
 
 
-
-
-
-
-
-
-
-
-
+# def realizarCompras(lista:list):
+#     pass
