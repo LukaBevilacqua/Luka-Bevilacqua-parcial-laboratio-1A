@@ -30,7 +30,30 @@ while True:
             else:
                 print("Primero debe cargar la lista")
         case "5":
-            listarInsumosOrdenados(lista_insumos)
+            if flag_cargar_lista:
+                listarInsumosOrdenados(lista_insumos)
+            else:
+                print("Primero debe cargar la lista")
+        case "6":
+            if flag_cargar_lista:
+                realizarCompras(lista_insumos)
+            else:
+                print("Primero debe cargar la lista")
+        case "7":
+            if flag_cargar_lista:
+                pass
+            else:
+                print("Primero debe cargar la lista")
+        case "8":
+            if flag_cargar_lista:
+                pass
+            else:
+                print("Primero debe cargar la lista")
+        case "9":
+            if flag_cargar_lista:
+                pass
+            else:
+                print("Primero debe cargar la lista")
         case "10":
             rta = input("Seguro que desea salir? s/n: ").lower().strip()
             if rta == "s":

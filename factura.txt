@@ -1,0 +1,7 @@
+CANTIDAD: 2
+PRODUCTO: Pedigree, Alimento para perros
+SUBTOTAL: $12.99
+CANTIDAD: 3
+PRODUCTO: Pedigree, Alimento para perros
+SUBTOTAL: $19.50
+TOTAL: 84.48

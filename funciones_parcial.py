@@ -13,7 +13,7 @@ def menu():
     print("|  9- Actualizar precios                |")
     print("|  10- salir                            |")
     print("-----------------------------------------")
-    opcion = input("Ingrese opcion: ")
+    opcion = input("Ingrese opcion: ").strip()
     return opcion
 
 def cargar_datos(ruta:str, formato_lectura:str, lista)->list:
@@ -82,19 +82,64 @@ def buscarInsumoPorLista(lista:list):
 
 
 def listarInsumosOrdenados(lista:list):
-    flag_cambio = True
-    contador = 1
-    while flag_cambio:
-        for insumo in range(len(lista) - contador):
-            if insumo['MARCA'] > insumo['MARCA' + 1]:
-                aux = insumo['MARCA']
-                insumo['MARCA'] = insumo['MARCA' + 1]
-                insumo['MARCA' + 1] = aux
-                flag_cambio = True
-            print(insumo)
-        contador = contador + 1
+    n = len(lista)
+    for i in range(n - 1): 
+        for j in range(n - i - 1):
+            if lista[j]['MARCA'] > lista[j + 1]['MARCA'] or (lista[j]['MARCA'] == lista[j + 1]['MARCA'] and lista[j]['PRECIO'] < lista[j + 1]['PRECIO']):
+                lista[j], lista[j + 1] = lista[j + 1], lista[j]
+        for insumo in lista:
+            caracteristicas = insumo['CARACTERISTICAS'].split('~')
+            primera_caracteristica = caracteristicas[0]
+            print(f" MARCA: {insumo['MARCA']} ID: {insumo['ID']} NOMBRE: {insumo['NOMBRE']} PRECIO: {insumo['PRECIO']} CARACTERÍSTICA: {primera_caracteristica}")
 
 
+def realizarCompras(lista:list):
+    lista_marcas = []
+    lista_insumos_comprados = []
+    lista_cantidad_insumos_comprados = []
+    contador_compras = 0
+    almacenador_precios = 0
+    while True:
+        rta = input("Ingrese la marca del producto que desea comprar: ").capitalize().strip()
+        print("---------------------------------------------------------------------")
+        for insumo in lista:
+            if insumo['MARCA'] == rta:
+                lista_marcas.append(insumo)
+                print(f" ID: {insumo['ID']} MARCA: {insumo['MARCA']}  NOMBRE: {insumo['NOMBRE']} PRECIO: {insumo['PRECIO']}")
+        print("---------------------------------------------------------------------")
+        rta = input("Escriba el ID del producto que desea comprar: ").strip()
+        while not rta.isdigit():
+            rta = input("Por favor, escriba el ID del producto que desea comprar: ")
+        print("---------------------------------------------------------------------")
+        for insumo in lista_marcas:
+            if insumo['ID'] == rta:
+                lista_insumos_comprados.append(insumo)
+                rta = input("Cuantos desea comprar? :").strip()
+                while not rta.isdigit() and not rta > 0:
+                    rta = input("Por favor ponga un numero que sea valido, cuantos desea comprar? :").strip
+                lista_cantidad_insumos_comprados.append(rta)
+                print(f"Guardamos {lista_cantidad_insumos_comprados[contador_compras]} productos con el ID: {insumo['ID']} para usted")
+        print("---------------------------------------------------------------------")
+        subtotal = float(lista_marcas[contador_compras]['PRECIO'].replace("$","")) * float(lista_cantidad_insumos_comprados[contador_compras])
+        almacenador_precios += subtotal
+        print(almacenador_precios)
+        rta = input("Desea comprar algo mas? s/n: ").strip().lower()
+        while rta != "s" and rta != "n":
+            rta = input("Por favor, responda con s/n: ").strip().lower()
+        if rta == "n":
+            print(f"El total de la compra es: ${almacenador_precios}")
+            break
+        contador_compras += 1
+        print("---------------------------------------------------------------------")
+    factura = open("factura.txt","w")
+    if len(lista_insumos_comprados) > 0:
+        for i in range(len(lista_insumos_comprados)):
+            insumo = lista_insumos_comprados[i]
+            cantidad = lista_cantidad_insumos_comprados[i]
+            factura.write("CANTIDAD: {}\nPRODUCTO: {}, {}\nSUBTOTAL: {}\n".format(cantidad, insumo['MARCA'], insumo['NOMBRE'], insumo['PRECIO']))
+        factura.write("TOTAL: {}\n".format(almacenador_precios))
+    factura.close()
 
-# def realizarCompras(lista:list):
-#     pass
+
+def guardarEnFormatoJSON():
+    pass
