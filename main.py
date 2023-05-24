@@ -4,6 +4,7 @@ from funciones_parcial import *
 lista_insumos = []
 flag_cargar_lista = False
 flag_json = False
+flag_nuevos_productos = False
 
 while True:
     os.system("cls")
@@ -57,6 +58,17 @@ while True:
             else:
                 print("Primero debe cargar la lista")
         case "10":
+            if flag_cargar_lista:
+                agregarNuevoProducto(lista_insumos)
+                flag_nuevos_productos = True
+            else:
+                print("Primero debe cargar la lista")
+        case "11":
+            if flag_cargar_lista and flag_nuevos_productos:
+                guardarDatosActualizados(lista_insumos)
+            else:
+                print("No hay productos nuevos para actualizar")
+        case "12":
             rta = input("Seguro que desea salir? s/n: ").lower().strip()
             if rta == "s":
                 break

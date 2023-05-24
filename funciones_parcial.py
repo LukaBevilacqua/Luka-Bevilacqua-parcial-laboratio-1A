@@ -13,7 +13,9 @@ def menu():
     print("|  7- Guardar en formato JSON           |")
     print("|  8- Leer desde formato JSON           |")
     print("|  9- Actualizar precios                |")
-    print("|  10- salir                            |")
+    print("|  10- Agregar nuevo producto           |")
+    print("|  11- Guardar datos actualizados       |")
+    print("|  12- Salir                            |")
     print("-----------------------------------------")
     opcion = input("Ingrese opcion: ").strip()
     return opcion
@@ -173,7 +175,74 @@ def actualizarPrecios(lista:list):
             linea = "{},{},{},{},{}\n".format(insumo['ID'], insumo['NOMBRE'], insumo['MARCA'], insumo['PRECIO'], insumo['CARACTERISTICAS'])
             file.write(linea)
 
+def agregarNuevoProducto(lista:list):
+    lista_productos_nuevos_marcas = []
+    lista_ids = []
+    lista_nombres = []
+    lista_precios = []
+    lista_caracteristicas = []
+    aux = []
+    with open("marcas.txt", "r") as file:
+        contenido = file.read()
+        print("--------------------------------")
+        print(contenido)
+        print("--------------------------------")
+        file.close()
+    rta = input("Que marca desea agregar?: ").capitalize().strip()
+    if rta in contenido:
+        lista_productos_nuevos_marcas.append(rta)
+        print("--------------------------------")
+        rta = input("Ingrese el ID: ").strip()
+        while not rta.isdigit():
+            print("--------------------------------")
+            print("El ID ingresado no es un numero")
+            rta = input("Ingrese un ID: ").strip()
+        id = len(lista)
+        while int(rta) < id:
+            print("--------------------------------")
+            print("El ID ya existe")
+            rta = input("Ingrese un ID: ").strip()
+        lista_ids.append(rta)
+        print("--------------------------------")
+        rta = input("Ingrese el nombre del producto: ").capitalize().strip()
+        lista_nombres.append(rta)
+        print("--------------------------------")
+        rta = input("Ingrese el precio del producto: ")
+        while not rta.isdigit() and float(rta) < 0:
+            print("--------------------------------")
+            print("El valor ingresado no es valido")
+            rta = input("Ingrese el precio del producto nuevamente: ")
+        lista_precios.append(rta)
+        print("--------------------------------")
+        rta = input("Ingrese una caracteristica del producto: ").capitalize().strip()
+        lista_caracteristicas.append(rta)
+        aux.append({"ID": lista_ids, "NOMBRE": lista_nombres,"MARCA": lista_productos_nuevos_marcas, "PRECIO": lista_precios, "CARACTERISTICAS": lista_caracteristicas})
+        for elemento in aux:
+            lista.append({"ID": elemento['ID'], "NOMBRE": elemento['NOMBRE'],"MARCA": elemento['MARCA'], "PRECIO": elemento['PRECIO'], "CARACTERISTICAS": elemento['CARACTERISTICAS']})
+        print("------------------------------------------")
+        print("| Se agrego un nuevo producto a la lista |")
+        print("------------------------------------------")
+    else:
+        print("No se encontro la marca ingresada")
 
+
+
+
+def guardarDatosActualizados(lista:list):
+    rta = input("Eliga el formato de exportacion csv/json: ").lower().strip()
+    if rta == "json":
+        rta = input("Ingrese el nombre del archivo: ").capitalize().strip
+        with open(rta, "w", encoding="utf-8") as file:
+            json.dump(lista, file, indent=4)
+    elif rta == "csv":
+        rta = input("Ingrese el nombre del archivo: ").capitalize().strip
+        with open(rta, "w", encoding="utf-8") as file:
+            file.write("ID, NOMBRE, MARCA, PRECIO, CARACTERISTICAS\n")
+        for insumo in lista:
+            linea = "{},{},{},{},{}\n".format(insumo['ID'], insumo['NOMBRE'], insumo['MARCA'], insumo['PRECIO'], insumo['CARACTERISTICAS'])
+            file.write(linea)
+    else:
+        print("el formato de exportacion no es valido")
 
 
 
