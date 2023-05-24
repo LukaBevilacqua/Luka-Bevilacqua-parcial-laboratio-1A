@@ -167,7 +167,7 @@ def actualizarPrecios(lista:list):
         "PRECIO": "${:.2f}".format(float(insumo['PRECIO'].replace("$","")) * 1.084),
         "CARACTERISTICAS": insumo['CARACTERISTICAS']
     }, lista))
-    with open("IInsumos.csv", "w", newline="", encoding="utf-8") as file:
+    with open("insumos.csv", "w", newline="", encoding="utf-8") as file:
         file.write("ID, NOMBRE, MARCA, PRECIO, CARACTERISTICAS\n")
         for insumo in lista_insumos_actualizados:
             linea = "{},{},{},{},{}\n".format(insumo['ID'], insumo['NOMBRE'], insumo['MARCA'], insumo['PRECIO'], insumo['CARACTERISTICAS'])
