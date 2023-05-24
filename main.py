@@ -3,6 +3,7 @@ from funciones_parcial import *
 
 lista_insumos = []
 flag_cargar_lista = False
+flag_json = False
 
 while True:
     os.system("cls")
@@ -41,17 +42,18 @@ while True:
                 print("Primero debe cargar la lista")
         case "7":
             if flag_cargar_lista:
-                pass
+                guardarEnFormatoJSON(lista_insumos)
+                flag_json = True
             else:
                 print("Primero debe cargar la lista")
         case "8":
-            if flag_cargar_lista:
-                pass
+            if flag_cargar_lista and flag_json:
+                leerDesdeFormatoJSON(lista_insumos)
             else:
-                print("Primero debe cargar la lista")
+                print("Primero debe cargar la lista o guardar en formato JSON")
         case "9":
             if flag_cargar_lista:
-                pass
+                actualizarPrecios(lista_insumos)
             else:
                 print("Primero debe cargar la lista")
         case "10":

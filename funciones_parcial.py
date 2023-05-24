@@ -1,3 +1,5 @@
+import json
+
 def menu():
     print("-----------------------------------------")
     print("|  *** Menu de Opciones ***             |")
@@ -137,9 +139,48 @@ def realizarCompras(lista:list):
             insumo = lista_insumos_comprados[i]
             cantidad = lista_cantidad_insumos_comprados[i]
             factura.write("CANTIDAD: {}\nPRODUCTO: {}, {}\nSUBTOTAL: {}\n".format(cantidad, insumo['MARCA'], insumo['NOMBRE'], insumo['PRECIO']))
-        factura.write("TOTAL: {}\n".format(almacenador_precios))
+        factura.write("TOTAL: ${}\n".format(almacenador_precios))
     factura.close()
 
 
-def guardarEnFormatoJSON():
-    pass
+def guardarEnFormatoJSON(lista:list):
+    lista_alimentos = []
+    for insumo in lista:
+        if "Alimento" in insumo['NOMBRE']:
+            lista_alimentos.append(insumo)
+    with open("Alimentos.json", "w", encoding="utf-8") as file:
+        json.dump(lista_alimentos, file, indent=4)
+
+
+def leerDesdeFormatoJSON(lista:list):
+    with open("Alimentos.json", "r") as file:
+        lista = json.load(file)
+    for insumo in lista:
+        print(f"ID: {insumo['ID']} NOMBRE: {insumo['NOMBRE']} MARCA: {insumo['MARCA']} PRECIO: {insumo['PRECIO']} CARACTERISTICAS: {insumo['CARACTERISTICAS']}\n")
+
+
+def actualizarPrecios(lista:list):
+    lista_insumos_actualizados = list(map(lambda insumo: {
+        "ID": insumo['ID'],
+        "NOMBRE": insumo['NOMBRE'],
+        "MARCA": insumo['MARCA'],
+        "PRECIO": "${:.2f}".format(float(insumo['PRECIO'].replace("$","")) * 1.084),
+        "CARACTERISTICAS": insumo['CARACTERISTICAS']
+    }, lista))
+    with open("IInsumos.csv", "w", newline="", encoding="utf-8") as file:
+        file.write("ID, NOMBRE, MARCA, PRECIO, CARACTERISTICAS\n")
+        for insumo in lista_insumos_actualizados:
+            linea = "{},{},{},{},{}\n".format(insumo['ID'], insumo['NOMBRE'], insumo['MARCA'], insumo['PRECIO'], insumo['CARACTERISTICAS'])
+            file.write(linea)
+
+
+
+
+
+
+
+
+
+
+
+
